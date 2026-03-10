@@ -34,8 +34,8 @@ def main():
         input_variables=["information"],
         template=summary_template)
 
-    want = "OpenAI"
     want = "Gemma3"
+    want = "OpenAI"
 
     if want == "OpenAI":
         llm = ChatOpenAI(model="gpt-5", temperature=0.1)
