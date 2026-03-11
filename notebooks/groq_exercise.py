@@ -20,15 +20,10 @@ https://console.groq.com/docs/models
 """
 
 import os
-# from xml.parsers.expat import model
-
 from dotenv import load_dotenv
 
-from langchain_core.prompts import PromptTemplate
+# from langchain_core.prompts import PromptTemplate
 # from langchain_groq import ChatGroq
-
-load_dotenv()
-
 
 # Mock ChatGroq class to simulate the real langchain-groq behavior
 class ChatGroq:
