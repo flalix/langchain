@@ -9,9 +9,11 @@ from langchain_core.output_parsers import StrOutputParser
 # from langchain_text_splitters import CharacterTextSplitter
 from langchain_core.messages import HumanMessage
 from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.runnables import RunnablePassthrough
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langchain_pinecone import PineconeVectorStore
 
+from operator import itemgetter
 
 load_dotenv()
 
@@ -74,37 +76,54 @@ def retrieval_chain_without_lcel(query: str):
     return response
 
 
+def create_retrievel_chain_with_lcel():
+    """
+    Create a retrieval chain using LCEL
+    Returns a chain that can be invoked wity {"question": "..."}
+
+    Advances over non-LCEL approach:
+    - Declarative and composable: easy to chain operations iwth pipe operator
+    - Built-in streaming: chain.stream() owrks ou of the box
+    - Built-in async: chain.ainvoke() and chain.astream() available
+    - Batch processing: chain.batch() for multiple inputs
+    - Type safety: better integration with LangChain's type system
+    - Less code: more concise and readable
+    - Reusable: chain can be saved, shared, and composed with other chains
+    - Better debugging: LangChain provides better observability tools
+
+    Debug in LangSmith:
+    https://smith.langchain.com/o/4881c1f7-1c4c-4016-86be-7e2757b06fe5/projects/p/a6d41c63-ccdd-4568-9432-c651b608d82b?timeModel=%7B%22duration%22%3A%221d%22%7D
+    """
+
+    retrieval_chain = (
+        RunnablePassthrough.assign(
+            context=itemgetter("question") | retriever | format_docs
+        ) |
+        prompt_template |
+        llm |
+        StrOutputParser()
+    )
+
+    return retrieval_chain
+
 if __name__ == "__main__":
     print("Retrieving ...")
 
+    #===========================================================================
+    #==== Option 2: RAG implementation with LangChain Expression Language LCEL
+    #===========================================================================
+
+    print("\n" + "="*40)
+    print("RAG implementation with LCEL")
+    print("="*40)
+
+    chain_with_lcel = create_retrievel_chain_with_lcel()
+
     query = "What is Pinecone in ML?"
-
-    #=========================================
-    #==== Option 0: raw invocation withou RAG
-    #=========================================
-
-    print("\n" + "="*70)
-    print("IMPLEMENTATION 0: Raw LLM invocation (no RAG)")
-    print("="*70)
-
-    result_raw = llm.invoke([HumanMessage(content=query)])
+    result = chain_with_lcel.invoke({"question": query})
 
     print("\nAnswer:")
-    print(result_raw.content)
-    print("\n")
-
-    #===============================================
-    #==== Option 1: RAG implementation without LCEL
-    #===============================================
-
-    print("\n" + "="*70)
-    print("RAG implementation without LCEL")
-    print("="*70)
-
-    result_wo_cel = retrieval_chain_without_lcel(query)
-
-    print("\nAnswer:")
-    print(result_wo_cel.content)
+    print(result)
     print("\n")
 
 '''
