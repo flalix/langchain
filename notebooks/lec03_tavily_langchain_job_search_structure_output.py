@@ -28,6 +28,7 @@ def create_agent(
         ToolStrategy[StructuredResponseT],
         ProviderStrategy[StructuredResponseT],
         type[StructuredResponseT],
+
         None,
     ]
 
