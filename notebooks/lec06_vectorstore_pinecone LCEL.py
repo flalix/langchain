@@ -91,6 +91,9 @@ def create_retrievel_chain_with_lcel():
     - Reusable: chain can be saved, shared, and composed with other chains
     - Better debugging: LangChain provides better observability tools
 
+    LangChain:
+    https://docs.langchain.com/oss/python/langgraph/agentic-rag
+    
     Debug in LangSmith:
     https://smith.langchain.com/o/4881c1f7-1c4c-4016-86be-7e2757b06fe5/projects/p/a6d41c63-ccdd-4568-9432-c651b608d82b?timeModel=%7B%22duration%22%3A%221d%22%7D
     """
