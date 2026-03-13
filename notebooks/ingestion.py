@@ -102,6 +102,11 @@ async def main():
         }
     )
 
+    log_info(
+        "🗺️  Converting Docs",
+        Colors.PURPLE,
+    )
+    
     # Convert Tavily crawl results to LangChain Document objects
     all_docs = []
     for tavily_crawl_result_item in res["results"]:

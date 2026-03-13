@@ -2,7 +2,6 @@ import os, ssl
 from typing import Any, Dict, List
 
 import asyncio
-
 import certifi
 
 from dotenv import load_dotenv
@@ -40,7 +39,6 @@ print("Tavily ...")
 tavily_extract = TavilyExtract()
 tavily_crawl   = TavilyCrawl()
 tavily_map     = TavilyMap(max_depth=5, max_breath=20, max_pages=1000)
-
 
 
 async def main():

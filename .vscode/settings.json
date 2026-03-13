@@ -1,0 +1,12 @@
+{
+    "explorerDates.enableAdvancedCache": true,
+    "explorerDates.enableAnalysisCommands": true,
+    "explorerDates.enableExportReporting": false,
+    "explorerDates.enableExtensionApi": false,
+    "explorerDates.enableIncrementalWorkers": false,
+    "explorerDates.enableOnboardingSystem": true,
+    "explorerDates.enableWorkspaceIntelligence": false,
+    "explorerDates.enableWorkspaceTemplates": true,
+    "explorerDates.performanceMode": true,
+    "explorerDates.smartFileWatching": true
+}
