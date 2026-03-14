@@ -41,13 +41,17 @@ def main():
         llm = ChatOpenAI(model="gpt-5", temperature=0.1)
     elif want == "Gemma3":
         llm = ChatOllama(model="gemma3:4b", temperature=0.1)  
+    else:
+        llm = None
+        print(">>> please define a model")
 
-    chain = summary_prompt_template | llm
+    if llm is not None:
+        chain = summary_prompt_template | llm
 
-    response = chain.invoke(input={"information": information})
+        response = chain.invoke(input={"information": information})
 
-    print("Foundation Models Summary:\n")
-    print(response.content)
+        print("Foundation Models Summary:\n")
+        print(response.content)
 
 if __name__ == "__main__":
     main()

@@ -3,10 +3,10 @@ from typing import Any, Dict
 from dotenv import load_dotenv
 from langchain.agents import create_agent
 from langchain.chat_models import init_chat_model
-from langchain.messages import ToolMessage
+from langchain.messages import ToolMessage # tool exectuion and retrieval
 from langchain.tools import tool
 from langchain_pinecone import PineconeVectorStore
-from langchain_openai import OpenAIEmbeddings
+from langchain_openai import OpenAIEmbeddings  # embed the query 
 
 load_dotenv()
 
@@ -18,12 +18,28 @@ vectorstore = PineconeVectorStore(
     index_name="langchain-docs-2026", embedding=embeddings
 )
 # Initialize chat model
+"""
+init_chat_model method()
+            - `claude...`                         -> `anthropic`
+            - `amazon...`                         -> `bedrock`
+            - `gemini...`                         -> `google_vertexai`
+            - `command...`                        -> `cohere`
+            - `accounts/fireworks...`             -> `fireworks`
+            - `mistral...`                        -> `mistralai`
+            - `deepseek...`                       -> `deepseek`
+            - `grok...`                           -> `xai`
+            - `sonar...`                          -> `perplexity`
+            - `solar...`                          -> `upstage`
+"""
 model = init_chat_model("gpt-5.2", model_provider="openai")
 
-
+# content OR content_and_artifact
 @tool(response_format="content_and_artifact")
 def retrieve_context(query: str):
-    """Retrieve relevant documentation to help answer user queries about LangChain."""
+    """
+    Retrieve relevant documentation to help answer user queries about LangChain.
+    """
+    
     # Retrieve top 4 most similar documents
     retrieved_docs = vectorstore.as_retriever().invoke(query, k=4)
     

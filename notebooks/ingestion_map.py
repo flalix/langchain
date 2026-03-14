@@ -10,7 +10,7 @@ from langchain_classic.text_splitter import RecursiveCharacterTextSplitter
 from langchain_core.documents import Document
 from langchain_openai import OpenAIEmbeddings
 from langchain_pinecone import PineconeVectorStore
-from langchain_tavily import TavilyCrawl, TavilyExtract, TavilyMap
+from langchain_tavily import TavilyExtract, TavilyMap  # TavilyCrawl
 
 from logger import (Colors, log_error, log_header, log_info, log_success, log_warning)
 
@@ -202,7 +202,6 @@ async def main():
     doc_list = await async_extract(url_batches)
 
 
-
     #------------ split the documents into str chunks ------------------
     chunk_size = 4000
     chunk_overlap = 200
@@ -210,7 +209,7 @@ async def main():
     log_header("DOCUMENT CHUNCKING PHASE")
     log_info(
         f"Text Splitter: Processing {len(doc_list) }documents with chunk_size={chunk_size} and chunk_overlap {chunk_overlap}",
-                                     Colors.YELLOW,
+        Colors.YELLOW,
     )
 
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=chunk_size,chunk_overlap=chunk_overlap)
@@ -223,6 +222,18 @@ async def main():
 
     # Process the documents asynchronously
     await index_documents_async(splited_docs, batch_size=200)
+
+    log_header("PINELINE IS COMPLETED")
+    log_success(
+        f"Documentation ingestion pipeline finished sucessfully!"
+    )
+    log_info(
+        f"Summary:", Colors.BOLD
+    )
+    log_info(f"   - URLs mapped: {len(site_map['results'])}" )
+    log_info(f"   - Documents extracted: {len(doc_list)}" )
+    log_info(f"   - Chunks created: {len(splited_docs)}" )
+    print("\n")
 
 if __name__ == "__main__":
     asyncio.run(main())
